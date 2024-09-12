@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Coverage Graph</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        #mynetwork {
+            width: 100%;
+            height: 600px;
+            border: 1px solid lightgray;
+        }
+    </style>
+</head>
+<body>
+    <h2>Interactive Coverage Graph</h2>
+    <div id="mynetwork"></div>
+    <script type="text/javascript">
+        var nodes = new vis.DataSet([{"id": 7, "label": "7", "color": "orange"}, {"id": 8, "label": "8", "color": "orange"}, {"id": 10, "label": "10", "color": "skyblue"}, {"id": 9, "label": "9", "color": "skyblue"}, {"id": 11, "label": "11", "color": "orange"}, {"id": 12, "label": "12", "color": "skyblue"}, {"id": 13, "label": "13", "color": "skyblue"}, {"id": 14, "label": "14", "color": "green"}]);
+        var edges = new vis.DataSet([{"from": 7, "to": 8}, {"from": 7, "to": 9}, {"from": 8, "to": 10}, {"from": 8, "to": 11}, {"from": 9, "to": 11}, {"from": 11, "to": 12}, {"from": 12, "to": 13}, {"from": 13, "to": 14}]);
+
+        var container = document.getElementById('mynetwork');
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            nodes: {
+                shape: 'dot',
+                scaling: {
+                    label: {
+                        enabled: true
+                    }
+                },
+                font: {
+                    size: 12,
+                    face: 'Arial'
+                }
+            },
+            edges: {
+                arrows: {
+                    to: { enabled: true }
+                },
+                smooth: {
+                    type: 'dynamic'
+                }
+            },
+            physics: {
+                forceAtlas2Based: {
+                    gravitationalConstant: -50,
+                    centralGravity: 0.01,
+                    springLength: 100,
+                    springConstant: 0.08
+                },
+                maxVelocity: 50,
+                solver: 'forceAtlas2Based',
+                timestep: 0.35,
+                stabilization: { iterations: 150 }
+            }
+        };
+        var network = new vis.Network(container, data, options);
+
+        function highlightPath(clickedNode) {
+            var startNode = 7;
+            var endNode = 14;
+            var path = [];
+            var highlightEdges = [];
+            var found = false;
+
+            for (var i = startNode; i <= endNode; i++) {
+                path.push(i);
+                if (i == clickedNode) {
+                    found = true;
+                }
+                if (found) {
+                    highlightEdges.push({ from: i - 1, to: i });
+                }
+                if (i == endNode) {
+                    break;
+                }
+            }
+
+            nodes.update(path.map(function(node) {
+                return { id: node, color: 'blue' };
+            }));
+
+            edges.update(highlightEdges.map(function(edge) {
+                return { from: edge.from, to: edge.to, color: { color: 'blue' } };
+            }));
+        }
+    </script>
+</body>
+</html>
