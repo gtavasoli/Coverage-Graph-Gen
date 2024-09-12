@@ -1,0 +1,3 @@
+afl-clang-fast -o example_1 main.c
+
+afl-showmap -o cd.txt -m none -- ./example_1
