@@ -24,7 +24,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-1. **Preparing Coverage Data:**, ...
+1. **Preparing Coverage Data:**, There are some examples that is described how you generate execution path.
 1. **Merge Coverage Reports:**
    To merge coverage data and generate a coverage reports, use the `merge_coverage.py` script. The coverage data from AFL++ should be provided as input.
 
